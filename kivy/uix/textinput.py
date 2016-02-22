@@ -1636,6 +1636,8 @@ class TextInput(FocusBehavior, Widget):
         if value:
             if (not (self.readonly or self.disabled) or _is_desktop and
                 self._keyboard_mode == 'system'):
+                self._cursor_blink_time = Clock.get_time()
+                self._do_blink_cursor(0)
                 Clock.schedule_interval(self._do_blink_cursor, 1 / 2.)
                 self._editable = True
             else:
@@ -1725,6 +1727,7 @@ class TextInput(FocusBehavior, Widget):
         # When the cursor is moved, reset the activity timer, and update all
         # the graphics.
         self._cursor_blink_time = Clock.get_time()
+        self._do_blink_cursor(0)
         self._trigger_update_graphics()
 
     def _delete_line(self, idx):
